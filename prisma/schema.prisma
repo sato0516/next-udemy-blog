@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(cuid())
+  name String
+  email String @unique
+  password String
+  posts Post[] //[]で複数記事を保持できる
+  createdAt DateTime @default(now())
+  updetedAt DateTime @updatedAt
+}
+
+model Post {
+  id String @id @default(cuid())
+  title String
+  content String
+  topImage String? //つけたりつけなかったりするので?をつける
+  published Boolean @default(true) //公開非公開なのでブーリアン
+  authorId String
+  author    User    @relation(fields: [authorId], references: [id], onDelete: Cascade)//Userは型、[authorId]と[id]を紐づけ
+  createdAt DateTime @default(now())
+  updetedAt DateTime @updatedAt
+}
