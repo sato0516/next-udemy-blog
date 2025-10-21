@@ -1,6 +1,7 @@
 import { formatDistanceToNow } from "date-fns"
 import { ja } from "date-fns/locale"
 import Link from "next/link"
+import Image from "next/image"
 import {
     Card,
     CardContent,
@@ -14,6 +15,18 @@ export default function PostCard({post}: PostCardProps) {
         //｛post.~｝動的にDBから取得する箇所
         <Card className="hover:shadow-lg transition-shadow">
             <Link href={`/posts/${post.id}`}>
+                {post.topImage && ( //postのtopImageがあるなら表示
+                    <div className="relative w-full h-48">
+                        <Image
+                            src={post.topImage}
+                            alt={post.title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw,33vw"//nextJS公式に記載のレスポンシブ対応
+                            className="rounded-t-md object-cover"
+                            priority
+                        />
+                    </div>
+                )} 
                 <CardHeader>
                     <CardTitle className="line-clamp-2">{post.title}</CardTitle>
                 </CardHeader>
