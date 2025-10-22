@@ -13,7 +13,7 @@ import { PostCardProps } from "@/types/post"
 export default function PostCard({post}: PostCardProps) {
     return (
         //｛post.~｝動的にDBから取得する箇所
-        <Card className="hover:shadow-lg transition-shadow overflow-hidden p-0">
+        <Card className="hover:shadow-lg transition-shadow overflow-hidden pt-0">
             <Link href={`/posts/${post.id}`}>
                 {post.topImage && ( //postのtopImageがあるなら表示
                     <div className="relative w-full h-48">
@@ -30,7 +30,7 @@ export default function PostCard({post}: PostCardProps) {
                 <CardHeader className="mt-3">
                     <CardTitle className="line-clamp-2 text-lg font-semibold">{post.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="pb-4">
+                <CardContent>
                     <p className="text-sm text-gray-600 mb-2 line-clamp-2">{post.content}</p>
                     <div className="flex item-center justify-between text-sm text-gray-500">
                         <span>{post.author.name}</span>
