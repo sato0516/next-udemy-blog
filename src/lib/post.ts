@@ -29,3 +29,35 @@ export async function getPost(id: string){
         }
     })
 }
+
+export async function searchPosts(search: string){ //引数は検索したい文字列
+    
+    //全角スペースを半角スペースに変換＆スペースで分割（空文字などを除外）
+    const decodedSearch = decodeURIComponent(search)
+    const normalizedSearch = decodedSearch.replace(/[\s　]+/g,' ').trim()
+    const searchWords = normalizedSearch.split(' ').filter(Boolean)
+
+    //filtersを定義：入力された単語を１つずつ、記事のタイトルか記事の内容どちらかに入っているかチェック
+    const filters = searchWords.map( word =>({
+        OR : [
+            { title: { contains: word }},
+            { content: { contains: word }},
+        ]
+    }))
+
+    return await prisma.post.findMany({
+        where: {
+            AND: filters // filtersに該当するもの（タイトルと内容にwordを含むもの）を複数、AND条件でつなげていく
+        },
+        include: {
+            author: {
+                select: {
+                    name: true
+                }
+            }
+        },
+        orderBy :{
+            createdAt: 'desc' //新しい順で指定
+        }
+    })
+}
