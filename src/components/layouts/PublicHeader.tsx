@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+//import { Input } from "@/components/ui/input"  検索ボックスを別コンポーネントに分離したため不要に。※SearchBoxコンポーネント
+import SearchBox from "@/components/post/SearchBox"
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -23,10 +24,12 @@ export default function PublicHeader() {
                         </NavigationMenuList>
                     </NavigationMenu>
                     <div className="flex items-center gap-4">
-                        <Input 
+                        {/*<Input 
                             placeholder="記事を検索…"
                             className="w-[200px] lg:w-[300px] bg-white"
                         />
+                        Inputタグに代わり、分離したSearchBoxコンポーネントを入れる*/}
+                        <SearchBox/>
                         <Button variant="outline" asChild>
                             <Link href="/login">
                             ログイン
