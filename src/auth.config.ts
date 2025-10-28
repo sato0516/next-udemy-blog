@@ -11,7 +11,7 @@ export const authConfig = {
         || nextUrl.pathname.startsWith('/manage');
         if (isOnDashboard) {
             if (isLoggedIn) return true;
-            return false; // ログインしていなければloginページにリダイレクト
+            return Response.redirect(new URL('/login', nextUrl)); // ログインしていなければloginページにリダイレクト
         } else if (isLoggedIn && nextUrl.pathname === '/login') {
             return Response.redirect(new URL('/dashboard', nextUrl));
         }
