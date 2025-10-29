@@ -13,5 +13,6 @@ export const registerSchema = z.object({
     confirmPassword: z.string({ required_error: "確認用メールアドレスは必須です" })
         .min(1,"確認用パスワードは必須です"),
 }).refine((data) => data.password === data.confirmPassword,{
+    message:"パスワードが一致しません",
     path: ["confirmPassword"], //エラーを表示するフィールドを指定
 });
