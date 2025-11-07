@@ -10,7 +10,9 @@ export default function PrivateLayout({
         <>
         {/*headerは共通で、その下はページごとに変える*/}
         <PrivateHeader />
-        {children} 
+        <div className="container mx-auto px-4 py-8">
+        {children}
+        </div> 
         </>
     )
 }
