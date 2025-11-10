@@ -11,8 +11,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
 export default function CreatePage(){
-    const {content, setContent} = useState("")
-    const {contentLength, setContentLength} =useState("")
+    const [content, setContent] = useState("")
+    const [contentLength, setContentLength] =useState("")
     const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const value = e.target.value
         setContent(value) //テキストエリアの内容を入力値で更新
