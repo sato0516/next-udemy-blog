@@ -12,7 +12,9 @@ import { Button } from "@/components/ui/button"
 
 export default function CreatePage(){
     const [content, setContent] = useState("")
-    const [contentLength, setContentLength] =useState("")
+    const [contentLength, setContentLength] = useState<number>(0)
+    const [preview,setPreview] = useState(false)
+
     const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const value = e.target.value
         setContent(value) //テキストエリアの内容を入力値で更新
@@ -35,6 +37,22 @@ export default function CreatePage(){
                 <div className="text-right text-sm text-gray-500 mt-1">
                     文字数： {contentLength}
                 </div>
+                <div>
+                    <Button type="button" onClick={()=> setPreview(!preview)}> {/*previewのtrue（表示） false（閉じている）を逆にする*/}
+                        {preview ? "プレビューを閉じる" : "プレビューを表示"}  {/*状態によってボタンの表示を変える*/}
+                    </Button>
+                </div>
+                {preview && (
+                    <div className="border p-4 bg-gray-50 prose max-w-none">
+                        <RactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeHighlight]}
+                        skipHtml={false}//HTMLスキップを無効化
+                        unwrapDisallowed={true} //Markdownの改行を解釈
+                        >{content}</RactMarkdown>
+                    </div>
+                )}
+                <Button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">投稿する</Button>
             </form>
         </div>
     )
