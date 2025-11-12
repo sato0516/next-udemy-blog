@@ -9,7 +9,7 @@ export async function saveImage(file: File): Promise<string | null>{
     try{
         const filePath = path.join(uploadDir,fileName)
         await writeFile(filePath,buffer) //メソッドwriteFileでbufferをファイルに書き込む
-        return `/image/${fileName}`//返り値は文字情報→DB保存
+        return `/images/${fileName}`//返り値は文字情報→DB保存
     } catch(error){
         return null
     }
