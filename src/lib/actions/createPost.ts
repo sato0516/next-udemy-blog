@@ -10,7 +10,7 @@ type ActionState = {
     errors: Record<string, string[]> //Record<K,V>という型：キーは文字列、値は文字列の配列とまとめて指示
 }
 
-export default async function createPost(
+export async function createPost(
     prevState: ActionState,
     formData: FormData
     ): Promise<ActionState>{
