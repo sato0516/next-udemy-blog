@@ -16,3 +16,24 @@ export async function getOwnPosts(userId: string){
         },
     })
 }
+
+export async function getOwnPost(userId: string, postId: string){
+    return await prisma.post.findFirst({
+        where: {
+            AND: [
+                { authorId: userId }, //左：DB列、右：引数の名前
+                { id: postId }
+            ]
+        },
+        select: {
+            id: true,
+            title: true,
+            content: true,
+            topImage: true,
+            author: true,
+            published: true,
+            createdAt: true,
+            updatedAt: true
+        }
+    })
+}
