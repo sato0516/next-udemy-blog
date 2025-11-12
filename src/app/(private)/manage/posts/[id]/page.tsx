@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation"
-import { getPost } from "@/lib/post"
+import { getOwnPost } from "@/lib/ownPost"
 import Image from "next/image"
 import { format } from "date-fns"
 import { ja } from "date-fns/locale"
+import { auth } from "@/auth"
 import {
     Card,
     CardContent,
@@ -18,9 +19,16 @@ type Params = {
     params: Promise<{id: string}>
 }
 
-export default async function PostPage({params}: Params) {
+export default async function ShowPage({params}: Params) {
+
+    const session = await auth()
+    const userId = session?.user?.id
+    if(!session?.user?.email || !userId){
+        throw new Error("不正なリクエストです")
+    }
+
     const {id} = await params
-    const post = await getPost(id)
+    const post = await getOwnPost(userId,id) //ログインしているユーザーIDと記事のIDを取得
 
     if(!post){
         notFound() //postが存在しない場合はnotFoundに飛ばす

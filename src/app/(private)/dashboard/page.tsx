@@ -5,11 +5,14 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
 export default async function DashBoardPage() {
+
+    //ログインしているユーザーidの取得
     const session = await auth()
     const userId = session?.user?.id
     if(!session?.user?.email || !userId){
         throw new Error("不正なリクエストです")
     }
+
     const posts = await getOwnPosts(userId)
     return(
         <div className='p-12'>
