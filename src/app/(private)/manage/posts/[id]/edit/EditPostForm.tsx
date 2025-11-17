@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { createPost } from "@/lib/actions/createPost"
 import Image from "next/image"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 //propsで受け取る（型指定）
 type EditPostFormProps = {
@@ -124,6 +125,16 @@ export default function EditPostForm({post}: EditPostFormProps) {
                         >{content}</ReactMarkdown>
                     </div>
                 )}
+                <RadioGroup value={published.toString()} name="published" onValueChange={(value)=> setPublished(value === "true")}> {/*DBから取得する値publishedを、toStringで文字情報へ変換*/}
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="true" id="published-one" />
+                        <Label htmlFor="published-one">表示</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="false" id="published-two" />
+                        <Label htmlFor="published-two">非表示</Label>
+                    </div>
+                </RadioGroup>
                 <Button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">更新する</Button>
                 <Input type="hidden" name="postId" value={post.id} />
                 <Input type="hidden" name="oldImageUrl" value={post.topImage || ''} /> {/*混同しないようにoldImageとする*/}
