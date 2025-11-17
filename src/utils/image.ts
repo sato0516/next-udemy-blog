@@ -11,6 +11,7 @@ export async function saveImage(file: File): Promise<string | null>{
         await writeFile(filePath,buffer) //メソッドwriteFileでbufferをファイルに書き込む
         return `/images/${fileName}`//返り値は文字情報→DB保存
     } catch(error){
+        console.error("画像保存エラー",error)
         return null
     }
 }
