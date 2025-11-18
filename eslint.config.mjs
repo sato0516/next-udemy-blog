@@ -18,6 +18,10 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "src/generated/**",
+      "src/**/generated/**",
+      "src/生成された/**",
+      "src/**/生成された/**",
     ],
   },
 ];
