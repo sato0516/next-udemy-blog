@@ -21,7 +21,7 @@ model User {
   password String
   posts Post[] //[]で複数記事を保持できる
   createdAt DateTime @default(now())
-  updetedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt
 }
 
 model Post {
@@ -33,5 +33,5 @@ model Post {
   authorId String
   author    User    @relation(fields: [authorId], references: [id], onDelete: Cascade)//Userは型、[authorId]と[id]を紐づけ
   createdAt DateTime @default(now())
-  updetedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt
 }
