@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "postinstall": "prisma generate",
+    "migrate:deploy": "prisma migrate deploy",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "lint": "next lint"
   },
   "prisma": {
     "_seed_old": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts",
