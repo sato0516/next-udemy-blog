@@ -1,6 +1,6 @@
-import { PrismaClient } from '@/generated/prisma'
-//import { PrismaClient } from '@prisma/client' →50のnpx prisma db seedでエラーのため書き換えてみる。
-//セクション４ではこっちに置換してエラー解消した→import { PrismaClient } from '@/generated/prisma'
+//import { PrismaClient } from '@/generated/prisma'
+//↑の前の設定：import { PrismaClient } from '@prisma/client' →50のnpx prisma db seedでエラーのため書き換えてみる。
+import { PrismaClient } from "@prisma/client"; //本番環境のエラー回避のため修正
 
 //グローバルスコープでPrismaインスタンスを保持できる場所を作る
 const globalForPrisma = globalThis as unknown as {

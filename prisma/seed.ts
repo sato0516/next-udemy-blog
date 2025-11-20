@@ -1,5 +1,6 @@
 //ダミーデータ用に作成したファイル
-import { PrismaClient } from '@/generated/prisma' //エラーのため修正
+//import { PrismaClient } from '@/generated/prisma' //エラーのため修正
+import { PrismaClient } from "@prisma/client"; //本番環境のエラー回避のため修正
 import * as bcypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
