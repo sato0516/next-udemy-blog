@@ -19,7 +19,11 @@ export async function createPost(
     const title = formData.get('title') as string
     const content = formData.get('content') as string
     const topImageInput = formData.get('topImage') //ただ取得ではなく、画像があるかどうかの確認をする（ための一旦の取得がtopImageInput）
-    const topImage = topImageInput instanceof File ? topImageInput : null //Fileなら＝画像ありならtopImageInputをかえす（topImageは存在することになる）、画像なしならnullをかえす
+    //const topImage = topImageInput instanceof File ? topImageInput : null //Fileなら＝画像ありならtopImageInputをかえす（topImageは存在することになる）、画像なしならnullをかえす
+    //本番エラー回避でsize判定へシフト
+    const topImage =topImageInput instanceof File && topImageInput.size > 0
+    ? topImageInput
+    : null
 
     //バリデーション
     const validationResult = postSchema.safeParse({ title,content,topImage})
@@ -30,7 +34,7 @@ export async function createPost(
     //画像保存
     const imageUrl = topImage ? await saveImage(topImage) : null //topImageが存在していたらsaveImageメソッドを呼ぶ。なければ（nullなら）null。
     if (topImage && !imageUrl){
-        return {success: false, errors: { image: ['画像の保存に失敗しました']}}
+        return {success: false, errors: { topImage: ['画像の保存に失敗しました']}}
     }
 
     //DB登録　※ログインしているユーザーの情報を取得したうえで処理する
