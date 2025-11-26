@@ -50,5 +50,6 @@ export async function updatePost(
         }
     })
 
-    redirect('/dashboard')
+    //redirect('/dashboard') 挙動修正のためリダイレクトはクライアント側へ
+    return { success: true, errors: {} }
 }
