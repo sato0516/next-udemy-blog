@@ -17,8 +17,9 @@ export async function updatePost(
     //フォームの情報を取得
     const title = formData.get('title') as string
     const content = formData.get('content') as string
-    const topImageInput = formData.get('topImage') //ただ取得ではなく、画像があるかどうかの確認をする（ための一旦の取得がtopImageInput）
-    const topImage = topImageInput instanceof File ? topImageInput : null //Fileなら＝画像ありならtopImageInputをかえす（topImageは存在することになる）、画像なしならnullをかえす
+    //const topImageInput = formData.get('topImage') //ただ取得ではなく、画像があるかどうかの確認をする（ための一旦の取得がtopImageInput）
+    //const topImage = topImageInput instanceof File ? topImageInput : null //Fileなら＝画像ありならtopImageInputをかえす（topImageは存在することになる）、画像なしならnullをかえす
+    const topImage = formData.get('topImage') as File | null//本番環境でエラー回避
     const postId = formData.get('postId') as string
     const published = formData.get('published') === 'true'
     const oldImageUrl = formData.get('oldImageUrl') as string
@@ -31,7 +32,7 @@ export async function updatePost(
 
     //画像保存
     let imageUrl = oldImageUrl
-    if(topImage instanceof File && topImage.size > 0 && topImage.name !== 'undefined'){//画像が存在しない場合を弾くための条件
+    if(topImage && topImage.size > 0){//画像が存在しない場合を弾くための条件
         const newImageUrl = await saveImage(topImage)  //3つの条件がそろう場合のみ、画像保存とURL取得を行う
         if (!newImageUrl){
             return {success: false, errors: { image: ['画像の保存に失敗しました']}}
