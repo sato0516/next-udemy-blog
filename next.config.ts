@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'xxx-yyy-zzz.public.blob.vercel-storage.com', // ← 実際の値に置き換え
+        hostname: 'ha54n9sprqogsms4.public.blob.vercel-storage.com', // ← DBで確認した値
       },
     ],
   },
