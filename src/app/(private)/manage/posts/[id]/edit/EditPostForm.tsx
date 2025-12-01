@@ -147,9 +147,6 @@ export default function EditPostForm({post}: EditPostFormProps) {
                 <Button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">更新する</Button>
                 <Input type="hidden" name="postId" value={post.id} />
                 <Input type="hidden" name="oldImageUrl" value={post.topImage || ''} /> {/*混同しないようにoldImageとする*/}
-            <pre className="mt-4 text-xs text-gray-500 bg-gray-50 p-2 rounded">
-                {JSON.stringify(state, null, 2)}
-            </pre>
             </form>
         </div>
     )
