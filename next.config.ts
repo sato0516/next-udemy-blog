@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "picsum.photos",
       },
+      {
+        protocol: 'https',
+        hostname: 'xxx-yyy-zzz.public.blob.vercel-storage.com', // ← 実際の値に置き換え
+      },
     ],
   },
   experimental: {
