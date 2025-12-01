@@ -60,14 +60,22 @@ export async function updatePost(
     //}
     
     if (topImage) {
-        const newImageUrl = await saveImage(topImage)
-        if (!newImageUrl) {
+        try {
+            const newImageUrl = await saveImage(topImage)
+            if (!newImageUrl) {
+                return {
+                    success: false,
+                    errors: { topImage: ['画像の保存に失敗しました（URL が空です）'] },
+                }
+            }
+            imageUrl = newImageUrl
+        } catch (e) {
+            console.error('updatePost: saveImage error', e)
             return {
                 success: false,
-                errors: { image: ['画像の保存に失敗しました'] },
+                errors: { topImage: ['画像の保存中にエラーが発生しました'] },
             }
         }
-        imageUrl = newImageUrl
     }
 
     //DB登録　※ログインしているユーザーの情報を取得したうえで処理する
