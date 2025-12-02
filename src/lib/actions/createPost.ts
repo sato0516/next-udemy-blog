@@ -1,58 +1,41 @@
 'use server'
-import { postSchema } from '@/validations/post'
-import { saveImage } from '@/utils/image'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 
 type ActionState = {
-    success: boolean,
-    errors: Record<string, string[]> //Record<K,V>という型：キーは文字列、値は文字列の配列とまとめて指示
+  success: boolean
+  errors: Record<string, string[]>
 }
 
 export async function createPost(
-    prevState: ActionState,
-    formData: FormData
-    ): Promise<ActionState>{
+  prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
+  const title = formData.get('title') as string
+  const content = formData.get('content') as string
 
-    //フォームの情報を取得
-    const title = formData.get('title') as string
-    const content = formData.get('content') as string
-    const topImageInput = formData.get('topImage') //ただ取得ではなく、画像があるかどうかの確認をする（ための一旦の取得がtopImageInput）
-    //const topImage = topImageInput instanceof File ? topImageInput : null //Fileなら＝画像ありならtopImageInputをかえす（topImageは存在することになる）、画像なしならnullをかえす
-    //本番エラー回避でsize判定へシフト
-    const topImage =topImageInput instanceof File && topImageInput.size > 0
-    ? topImageInput
-    : null
+  // ① ここで動いているか確認
+  console.log('createPost called', { title, content })
 
-    //バリデーション
-    const validationResult = postSchema.safeParse({ title,content,topImage})
-    if (!validationResult.success){
-        return { success: false, errors: validationResult.error.flatten().fieldErrors}
-    }
+  const session = await auth()
+  const userId = session?.user?.id
+  if (!session?.user?.email || !userId) {
+    console.log('no session or userId')
+    throw new Error('不正なリクエストです')
+  }
 
-    //画像保存
-    const imageUrl = topImage ? await saveImage(topImage) : null //topImageが存在していたらsaveImageメソッドを呼ぶ。なければ（nullなら）null。
-    if (topImage && !imageUrl){
-        return {success: false, errors: { topImage: ['画像の保存に失敗しました']}}
-    }
+  await prisma.post.create({
+    data: {
+      title,
+      content,
+      topImage: null,
+      published: true,
+      authorId: userId,
+    },
+  })
 
-    //DB登録　※ログインしているユーザーの情報を取得したうえで処理する
-    const session = await auth()
-    const userId = session?.user?.id
-    if(!session?.user?.email || !userId){
-        throw new Error("不正なリクエストです")
-    }
+  console.log('post created, redirecting')
 
-    await prisma.post.create({
-        data: {
-            title,
-            content,
-            topImage: imageUrl,
-            published: true,
-            authorId: userId
-        }
-    })
-
-    redirect('/dashboard')
+  redirect('/dashboard')
 }

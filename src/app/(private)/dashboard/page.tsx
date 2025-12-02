@@ -13,6 +13,22 @@ export default async function DashBoardPage() {
         throw new Error("不正なリクエストです")
     }
 
+    // 表示修正のためタイムゾーン指定
+    function formatDateToJST(dateInput: string | Date) {
+    // 文字列で渡ってきたら Date に変換、すでに Date 型ならそのまま使う
+        const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
+
+        return date.toLocaleString("ja-JP", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,        // 24時間表記
+            timeZone: "Asia/Tokyo", // 日本時間
+        });
+    }
+
     const posts = await getOwnPosts(userId)
     return(
         <div className='p-12'>
@@ -39,7 +55,7 @@ export default async function DashBoardPage() {
                                 {post.published ? "表示" : "非表示"}
                             </td>
                             <td className='border p-2 text-center'>
-                                {new Date(post.updatedAt).toLocaleString()}
+                                {formatDateToJST(post.updatedAt)}
                             </td>
                             <td className='border p-2 text-center'>
                                 <PostDropdownMenu postId={post.id} />

@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button"
 import { updatePost } from "@/lib/actions/updatePost"
 import Image from "next/image"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { useRouter } from "next/navigation"
 
 //propsで受け取る（型指定）
 type EditPostFormProps = {
@@ -25,6 +26,7 @@ type EditPostFormProps = {
 }
 
 export default function EditPostForm({post}: EditPostFormProps) {
+    const router = useRouter()
     //各項目useStateで変更できるように※初期値はpost(props)がもつ値等を指定
     const [content, setContent] = useState(post.content)
     const [contentLength, setContentLength] = useState<number>(0)
@@ -36,6 +38,13 @@ export default function EditPostForm({post}: EditPostFormProps) {
     const [state,formAction] = useActionState(updatePost,{
         success: false, errors: {}
     })
+
+    //クライアント側でリダイレクトを設定
+    useEffect(() => {
+        if (state.success) {
+            router.push('/dashboard')
+        }
+    }, [state.success, router])
 
     const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const value = e.target.value
@@ -62,7 +71,7 @@ export default function EditPostForm({post}: EditPostFormProps) {
     return(
         <div className="container mx-auto mt-10">
             <h1 className="text-2xl font-bold mb-4">新規記事投稿（Markdown対応）</h1>
-            <form action={formAction} className="space-y-4">
+            <form action={formAction} className="space-y-4" encType="multipart/form-data">
                 <div>
                     <Label htmlFor="title">タイトル</Label>
                     <Input type="text" id="title" name="title" placeholder="タイトルを入力してください" 
