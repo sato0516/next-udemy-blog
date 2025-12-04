@@ -23,23 +23,22 @@ export default function PublicHeader() {
                             </NavigationMenuItem>
                         </NavigationMenuList>
                     </NavigationMenu>
-                    <div className="flex items-center gap-4">
-                        {/*<Input 
-                            placeholder="記事を検索…"
-                            className="w-[200px] lg:w-[300px] bg-white"
-                        />
-                        Inputタグに代わり、分離したSearchBoxコンポーネントを入れる*/}
-                        <SearchBox/>
-                        <Button variant="outline" asChild>
-                            <Link href="/login">
-                            ログイン
-                            </Link>
-                        </Button>
-                        <Button asChild>
-                            <Link href="/register">
-                            登録
-                            </Link>
-                        </Button>
+
+                        {/* 右側：検索 + ボタン（SPでは縦に、PCでは横に） */}
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4 sm:min-w-[320px]">
+                        {/* 検索ボックス：SPは横幅いっぱい、PCは固定幅 */}
+                        <div className="w-full sm:w-64">
+                            <SearchBox />
+                        </div>
+
+                        <div className="flex justify-end gap-2">
+                            <Button variant="outline" asChild>
+                                <Link href="/login">ログイン</Link>
+                            </Button>
+                            <Button asChild>
+                                <Link href="/register">登録</Link>
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </header>
